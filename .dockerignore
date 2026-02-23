@@ -1,0 +1,21 @@
+# Docker
+.env
+docker-compose.override.yml
+
+# Storage
+storage/uploads/*
+!storage/uploads/.gitkeep
+
+# Vendor
+vendor/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

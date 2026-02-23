@@ -1,0 +1,16 @@
+# Habilitar RewriteEngine
+RewriteEngine On
+
+# Redirecionar todas as requisições para index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Desabilitar listagem de diretórios
+Options -Indexes
+
+# Proteção de arquivos sensíveis
+<FilesMatch "\.(env|json|lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Aplicação PHP
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: myfinances_app
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./storage/uploads:/var/www/html/storage/uploads
+    environment:
+      - APP_ENV=development
+      - APP_URL=http://localhost:8000
+    depends_on:
+      - db
+    networks:
+      - myfinances_network
+
+  # Banco de dados MySQL
+  db:
+    image: mysql:8.0
+    container_name: myfinances_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: myfinances
+      MYSQL_USER: myfinances
+      MYSQL_PASSWORD: myfinances123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - myfinances_network
+
+  # phpMyAdmin (opcional, para gerenciar o banco)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: myfinances_phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
+    networks:
+      - myfinances_network
+
+networks:
+  myfinances_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

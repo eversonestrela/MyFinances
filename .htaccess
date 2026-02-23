@@ -1,0 +1,6 @@
+# Habilitar RewriteEngine
+RewriteEngine On
+
+# Redirecionar para a pasta public
+RewriteRule ^$ public/ [L]
+RewriteRule (.*) public/$1 [L]
