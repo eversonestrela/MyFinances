@@ -1,4 +1,7 @@
-<?php $title = 'Perfil - MyFinances'; ob_start(); $appUrl = \App\Core\Env::get('APP_URL', 'http://localhost:8000'); ?>
+<?php
+$title      = 'Meu Perfil — MyFinances';
+$seoNoIndex = true;
+ob_start(); $appUrl = \App\Core\Env::get('APP_URL', 'http://localhost:8000'); ?>
 <div class="container py-4">
     <h3 class="mb-4">Meu Perfil</h3>
     <div class="row">

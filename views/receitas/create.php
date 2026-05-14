@@ -1,5 +1,6 @@
 <?php
-$title = 'Nova Receita - MyFinances';
+$title      = 'Nova Receita — MyFinances';
+$seoNoIndex = true;
 ob_start();
 ?>
 

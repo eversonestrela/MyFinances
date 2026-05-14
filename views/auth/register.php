@@ -1,5 +1,7 @@
 <?php
-$title = 'Cadastro - MyFinances';
+$title          = 'Criar Conta Grátis — MyFinances | Sistema Financeiro Pessoal';
+$seoDescription = 'Crie sua conta gratuita no MyFinances em menos de 1 minuto. Sem cartão de crédito. Comece a organizar suas finanças pessoais agora mesmo.';
+$seoKeywords    = 'cadastro myfinances, criar conta controle financeiro, sistema financeiro gratuito cadastro';
 ob_start();
 ?>
 

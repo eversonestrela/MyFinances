@@ -1,5 +1,7 @@
 <?php
-$title = 'Dashboard - MyFinances';
+$title          = 'Dashboard — Meu Controle Financeiro | MyFinances';
+$seoDescription = 'Seu painel financeiro pessoal. Visualize receitas, despesas, dívidas e saldo do mês em um dashboard completo e intuitivo.';
+$seoNoIndex     = true; // página privada
 ob_start();
 
 $meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];

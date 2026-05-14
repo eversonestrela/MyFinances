@@ -1,5 +1,7 @@
 <?php
-$title = 'Receitas - MyFinances';
+$title          = 'Controle de Receitas — MyFinances';
+$seoDescription = 'Registre e acompanhe todas as suas fontes de renda. Receitas recorrentes e pontuais em um sistema financeiro gratuito.';
+$seoNoIndex     = true;
 ob_start();
 ?>
 

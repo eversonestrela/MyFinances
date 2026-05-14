@@ -8,16 +8,18 @@
 use App\Controllers\AuthController;
 use App\Controllers\CategoriaController;
 use App\Controllers\DashboardController;
+use App\Controllers\PublicController;
 use App\Controllers\ReceitaController;
 use App\Controllers\DespesaController;
 use App\Controllers\DividaController;
 use App\Controllers\PerfilController;
 use App\Controllers\RelatorioController;
 
-// Rota raiz - redireciona para dashboard
-$router->get('/', function($request, $response) {
-    $response->redirect('/dashboard');
-});
+// ============================================
+// Rotas Públicas (SEO / landing page)
+// ============================================
+$router->get('/', [PublicController::class, 'landing']);
+$router->get('/sitemap.xml', [PublicController::class, 'sitemap']);
 
 // ============================================
 // Rotas de Autenticação

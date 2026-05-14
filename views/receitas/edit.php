@@ -1,5 +1,6 @@
 <?php
-$title = 'Editar Receita - MyFinances';
+$title      = 'Editar Receita — MyFinances';
+$seoNoIndex = true;
 ob_start();
 ?>
 

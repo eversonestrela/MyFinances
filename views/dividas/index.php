@@ -1,4 +1,9 @@
-<?php $title = 'Dívidas - MyFinances'; ob_start(); ?>
+<?php
+$title          = 'Controle de Dívidas — MyFinances';
+$seoDescription = 'Organize e acompanhe todas as suas dívidas pessoais por categoria e período. Gestão de dívidas gratuita e intuitiva.';
+$seoNoIndex     = true;
+ob_start();
+?>
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>Dívidas Variáveis</h3>

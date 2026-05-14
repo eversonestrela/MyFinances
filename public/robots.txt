@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /register
+
+# Bloquear páginas privadas/funcionais
+Disallow: /dashboard
+Disallow: /receitas
+Disallow: /despesas
+Disallow: /dividas
+Disallow: /categorias
+Disallow: /relatorios
+Disallow: /perfil
+Disallow: /logout
+Disallow: /assets/
+Disallow: /storage/
+
+# Sitemap
+Sitemap: https://myfinances.app/sitemap.xml

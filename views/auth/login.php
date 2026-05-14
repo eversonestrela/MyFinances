@@ -1,5 +1,7 @@
 <?php
-$title = 'Login - MyFinances';
+$title          = 'Entrar — MyFinances | Controle Financeiro Pessoal';
+$seoDescription = 'Acesse sua conta no MyFinances e retome o controle das suas finanças pessoais. Sistema gratuito de gestão financeira.';
+$seoKeywords    = 'login myfinances, entrar controle financeiro, acessar sistema financeiro';
 ob_start();
 ?>
 

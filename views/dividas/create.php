@@ -1,4 +1,8 @@
-<?php $title = 'Nova Dívida - MyFinances'; ob_start(); ?>
+<?php
+$title      = 'Nova Dívida — MyFinances';
+$seoNoIndex = true;
+ob_start();
+?>
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">

@@ -1,4 +1,8 @@
-<?php $title = 'Categorias - MyFinances'; ob_start(); ?>
+<?php
+$title      = 'Categorias de Gastos — MyFinances';
+$seoNoIndex = true;
+ob_start();
+?>
 
 <?php
 // Ícones disponíveis para seleção

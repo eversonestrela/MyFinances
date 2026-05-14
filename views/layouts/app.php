@@ -2,24 +2,114 @@
 use App\Core\Session;
 Session::start();
 
-$appUrl = \App\Core\Env::get('APP_URL', 'http://localhost:8000');
+$appUrl  = \App\Core\Env::get('APP_URL', 'http://localhost:8000');
+$appName = \App\Core\Env::get('APP_NAME', 'MyFinances');
+
+// ── SEO defaults (views podem sobrescrever antes de incluir este layout) ──
+$seoTitle       = isset($seoTitle)       ? $seoTitle       : ($title ?? 'MyFinances — Controle Financeiro Pessoal Gratuito');
+$seoDescription = isset($seoDescription) ? $seoDescription : 'MyFinances é um sistema gratuito de controle financeiro pessoal. Gerencie receitas, despesas, dívidas e relatórios financeiros de forma simples e intuitiva.';
+$seoKeywords    = isset($seoKeywords)    ? $seoKeywords    : 'controle financeiro pessoal, gestão financeira, controle de gastos, controle de despesas, organização financeira, planejamento financeiro, sistema financeiro gratuito, gestão de dívidas, controle de contas pessoais, finanças pessoais';
+$seoImage       = isset($seoImage)       ? $seoImage       : $appUrl . '/assets/img/og-image.png';
+$seoUrl         = isset($seoUrl)         ? $seoUrl         : $appUrl . ($_SERVER['REQUEST_URI'] ?? '/');
+$seoType        = isset($seoType)        ? $seoType        : 'website';
+$seoNoIndex     = isset($seoNoIndex)     ? $seoNoIndex     : false; // true em páginas privadas
+
+// Sanitizar para uso em atributos HTML
+$seoTitle       = htmlspecialchars($seoTitle,       ENT_QUOTES, 'UTF-8');
+$seoDescription = htmlspecialchars($seoDescription, ENT_QUOTES, 'UTF-8');
+$seoKeywords    = htmlspecialchars($seoKeywords,    ENT_QUOTES, 'UTF-8');
+$seoUrl         = htmlspecialchars($seoUrl,         ENT_QUOTES, 'UTF-8');
+$seoImage       = htmlspecialchars($seoImage,       ENT_QUOTES, 'UTF-8');
+
+// Schema.org JSON-LD (pode ser sobrescrito por cada view)
+$schemaJsonLd   = isset($schemaJsonLd) ? $schemaJsonLd : null;
+
+// GA4 measurement ID (configure no .env)
+$gaId = \App\Core\Env::get('GA_MEASUREMENT_ID', '');
 ?>
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" prefix="og: https://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'MyFinances' ?></title>
-    
+
+    <!-- ═══════════════════════════════════════════
+         SEO PRIMÁRIO
+    ═══════════════════════════════════════════ -->
+    <title><?= $seoTitle ?></title>
+    <meta name="description"        content="<?= $seoDescription ?>">
+    <meta name="keywords"           content="<?= $seoKeywords ?>">
+    <meta name="author"             content="MyFinances">
+    <meta name="robots"             content="<?= $seoNoIndex ? 'noindex, nofollow' : 'index, follow' ?>">
+    <meta name="googlebot"          content="<?= $seoNoIndex ? 'noindex, nofollow' : 'index, follow' ?>">
+    <link rel="canonical"           href="<?= $seoUrl ?>">
+
+    <!-- ═══════════════════════════════════════════
+         OPEN GRAPH (Facebook / WhatsApp / LinkedIn)
+    ═══════════════════════════════════════════ -->
+    <meta property="og:type"        content="<?= htmlspecialchars($seoType, ENT_QUOTES) ?>">
+    <meta property="og:url"         content="<?= $seoUrl ?>">
+    <meta property="og:title"       content="<?= $seoTitle ?>">
+    <meta property="og:description" content="<?= $seoDescription ?>">
+    <meta property="og:image"       content="<?= $seoImage ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height"content="630">
+    <meta property="og:site_name"   content="MyFinances">
+    <meta property="og:locale"      content="pt_BR">
+
+    <!-- ═══════════════════════════════════════════
+         TWITTER CARDS
+    ═══════════════════════════════════════════ -->
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="<?= $seoTitle ?>">
+    <meta name="twitter:description" content="<?= $seoDescription ?>">
+    <meta name="twitter:image"       content="<?= $seoImage ?>">
+
+    <!-- ═══════════════════════════════════════════
+         FAVICON + APP ICONS
+    ═══════════════════════════════════════════ -->
+    <link rel="icon"             type="image/svg+xml"  href="<?= $appUrl ?>/assets/img/favicon.svg">
+    <link rel="icon"             type="image/png"      href="<?= $appUrl ?>/assets/img/favicon.png" sizes="32x32">
+    <link rel="apple-touch-icon"                       href="<?= $appUrl ?>/assets/img/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest"                               href="<?= $appUrl ?>/manifest.json">
+    <meta name="theme-color"     content="#667eea">
+    <meta name="msapplication-TileColor" content="#667eea">
+
+    <!-- ═══════════════════════════════════════════
+         PERFORMANCE / PRECONNECT
+    ═══════════════════════════════════════════ -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+    <!-- ═══════════════════════════════════════════
+         SCHEMA.ORG JSON-LD
+    ═══════════════════════════════════════════ -->
+    <?php if ($schemaJsonLd): ?>
+    <script type="application/ld+json"><?= $schemaJsonLd ?></script>
+    <?php endif; ?>
+
+    <!-- ═══════════════════════════════════════════
+         GOOGLE ANALYTICS 4
+    ═══════════════════════════════════════════ -->
+    <?php if ($gaId): ?>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= htmlspecialchars($gaId, ENT_QUOTES) ?>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '<?= htmlspecialchars($gaId, ENT_QUOTES) ?>', { anonymize_ip: true });
+    </script>
+    <?php endif; ?>
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    
+
     <!-- Custom CSS -->
     <link href="<?= $appUrl ?>/assets/css/style.css" rel="stylesheet">
-    
+
     <?= $extraHead ?? '' ?>
 </head>
 <body>

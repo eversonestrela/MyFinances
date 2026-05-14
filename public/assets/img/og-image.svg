@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="100%" stop-color="#764ba2"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Card central -->
+  <rect x="200" y="120" width="800" height="390" rx="24" fill="rgba(255,255,255,0.12)"/>
+  <!-- Ícone carteira -->
+  <text x="600" y="270" font-size="100" text-anchor="middle" fill="#fff">💰</text>
+  <!-- Título -->
+  <text x="600" y="360" font-size="64" font-weight="bold" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif">MyFinances</text>
+  <!-- Subtítulo -->
+  <text x="600" y="420" font-size="28" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="Arial,sans-serif">Controle Financeiro Pessoal Gratuito</text>
+  <!-- Badge -->
+  <rect x="470" y="450" width="260" height="40" rx="20" fill="rgba(255,255,255,0.2)"/>
+  <text x="600" y="476" font-size="18" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif">✓ 100% Gratuito  ✓ Seguro</text>
+</svg>

@@ -1,4 +1,9 @@
-<?php $title = 'Despesas - MyFinances'; ob_start(); ?>
+<?php
+$title          = 'Controle de Despesas — MyFinances';
+$seoDescription = 'Gerencie suas despesas mensais com parcelas automáticas. Controle quais estão pagas e pendentes. Sistema gratuito de controle de gastos pessoais.';
+$seoNoIndex     = true;
+ob_start();
+?>
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>Despesas Parceladas</h3>

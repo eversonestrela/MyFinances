@@ -1,4 +1,9 @@
-<?php $title = 'Relatórios Financeiros - MyFinances'; ob_start(); ?>
+<?php
+$title          = 'Relatórios Financeiros — MyFinances';
+$seoDescription = 'Visualize relatórios detalhados das suas finanças pessoais com gráficos. Exporte em PDF e Excel. Sistema gratuito de relatórios financeiros.';
+$seoNoIndex     = true;
+ob_start();
+?>
 <?php
 $nomeMeses = [
     1=>'Janeiro',2=>'Fevereiro',3=>'Março',4=>'Abril',
