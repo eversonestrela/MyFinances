@@ -34,6 +34,22 @@ body {
     }
 }
 
+/* Remove padding no body quando a auth-page estiver presente */
+body:has(.auth-page) {
+    padding-bottom: 0 !important;
+    background-color: #fff;
+}
+
+/* Remove margens dos alertas do layout na auth-page */
+body:has(.auth-page) .main-content > .container.mt-3 {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    left: auto;
+    max-width: 360px;
+    z-index: 9999;
+}
+
 /* Main Content */
 .main-content {
     min-height: calc(100vh - 80px);
