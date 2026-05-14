@@ -10,6 +10,8 @@ class Despesa
 {
     public ?int $id = null;
     public int $usuario_id;
+    public ?int $categoria_id = null;
+    public ?string $categoria_nome = null;
     public string $descricao;
     public float $valor_total;
     public string $data_inicio;
@@ -40,6 +42,8 @@ class Despesa
     {
         $this->id = $data['id'] ?? null;
         $this->usuario_id = $data['usuario_id'] ?? 0;
+        $this->categoria_id = isset($data['categoria_id']) ? (int) $data['categoria_id'] : null;
+        $this->categoria_nome = $data['categoria_nome'] ?? null;
         $this->descricao = $data['descricao'] ?? '';
         $this->valor_total = (float) ($data['valor_total'] ?? 0);
         $this->data_inicio = $data['data_inicio'] ?? '';
@@ -59,6 +63,7 @@ class Despesa
         return [
             'id' => $this->id,
             'usuario_id' => $this->usuario_id,
+            'categoria_id' => $this->categoria_id,
             'descricao' => $this->descricao,
             'valor_total' => $this->valor_total,
             'data_inicio' => $this->data_inicio,

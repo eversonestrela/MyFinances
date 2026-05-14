@@ -55,6 +55,16 @@ $appUrl = \App\Core\Env::get('APP_URL', 'http://localhost:8000');
                                 <i class="bi bi-exclamation-triangle"></i> Dívidas
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/categorias">
+                                <i class="bi bi-tags"></i> Categorias
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/relatorios">
+                                <i class="bi bi-bar-chart-line"></i> Relatórios
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                                 <?php if (Session::get('usuario_foto')): ?>
@@ -118,6 +128,14 @@ $appUrl = \App\Core\Env::get('APP_URL', 'http://localhost:8000');
             <a href="/dividas" class="mobile-nav-item">
                 <i class="bi bi-exclamation-triangle"></i>
                 <span>Dívidas</span>
+            </a>
+            <a href="/categorias" class="mobile-nav-item">
+                <i class="bi bi-tags"></i>
+                <span>Categorias</span>
+            </a>
+            <a href="/relatorios" class="mobile-nav-item">
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Relatórios</span>
             </a>
             <a href="/perfil" class="mobile-nav-item">
                 <i class="bi bi-person"></i>

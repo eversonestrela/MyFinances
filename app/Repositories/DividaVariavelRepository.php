@@ -29,11 +29,16 @@ class DividaVariavelRepository
      */
     public function findById(int $id): ?DividaVariavel
     {
-        $stmt = $this->db->prepare("SELECT * FROM dividas_variaveis WHERE id = :id");
+        $stmt = $this->db->prepare(
+            "SELECT dv.*, c.nome AS categoria_nome
+             FROM dividas_variaveis dv
+             LEFT JOIN categorias c ON c.id = dv.categoria_id
+             WHERE dv.id = :id"
+        );
         $stmt->execute(['id' => $id]);
-        
+
         $data = $stmt->fetch();
-        
+
         return $data ? new DividaVariavel($data) : null;
     }
 
@@ -46,17 +51,19 @@ class DividaVariavelRepository
     public function findByUsuario(int $usuarioId): array
     {
         $stmt = $this->db->prepare(
-            "SELECT * FROM dividas_variaveis 
-             WHERE usuario_id = :usuario_id 
-             ORDER BY ano DESC, mes DESC"
+            "SELECT dv.*, c.nome AS categoria_nome
+             FROM dividas_variaveis dv
+             LEFT JOIN categorias c ON c.id = dv.categoria_id
+             WHERE dv.usuario_id = :usuario_id
+             ORDER BY dv.ano DESC, dv.mes DESC"
         );
         $stmt->execute(['usuario_id' => $usuarioId]);
-        
+
         $dividas = [];
         while ($row = $stmt->fetch()) {
             $dividas[] = new DividaVariavel($row);
         }
-        
+
         return $dividas;
     }
 
@@ -71,23 +78,25 @@ class DividaVariavelRepository
     public function findByPeriodo(int $usuarioId, int $mes, int $ano): array
     {
         $stmt = $this->db->prepare(
-            "SELECT * FROM dividas_variaveis 
-             WHERE usuario_id = :usuario_id 
-             AND mes = :mes 
-             AND ano = :ano
-             ORDER BY descricao"
+            "SELECT dv.*, c.nome AS categoria_nome
+             FROM dividas_variaveis dv
+             LEFT JOIN categorias c ON c.id = dv.categoria_id
+             WHERE dv.usuario_id = :usuario_id
+             AND dv.mes = :mes
+             AND dv.ano = :ano
+             ORDER BY dv.descricao"
         );
         $stmt->execute([
             'usuario_id' => $usuarioId,
-            'mes' => $mes,
-            'ano' => $ano
+            'mes'        => $mes,
+            'ano'        => $ano,
         ]);
-        
+
         $dividas = [];
         while ($row = $stmt->fetch()) {
             $dividas[] = new DividaVariavel($row);
         }
-        
+
         return $dividas;
     }
 
@@ -126,16 +135,17 @@ class DividaVariavelRepository
     public function create(DividaVariavel $divida): bool
     {
         $stmt = $this->db->prepare(
-            "INSERT INTO dividas_variaveis (usuario_id, descricao, mes, ano, valor) 
-             VALUES (:usuario_id, :descricao, :mes, :ano, :valor)"
+            "INSERT INTO dividas_variaveis (usuario_id, categoria_id, descricao, mes, ano, valor)
+             VALUES (:usuario_id, :categoria_id, :descricao, :mes, :ano, :valor)"
         );
 
         $result = $stmt->execute([
-            'usuario_id' => $divida->usuario_id,
-            'descricao' => $divida->descricao,
-            'mes' => $divida->mes,
-            'ano' => $divida->ano,
-            'valor' => $divida->valor
+            'usuario_id'   => $divida->usuario_id,
+            'categoria_id' => $divida->categoria_id,
+            'descricao'    => $divida->descricao,
+            'mes'          => $divida->mes,
+            'ano'          => $divida->ano,
+            'valor'        => $divida->valor,
         ]);
 
         if ($result) {
@@ -154,17 +164,18 @@ class DividaVariavelRepository
     public function update(DividaVariavel $divida): bool
     {
         $stmt = $this->db->prepare(
-            "UPDATE dividas_variaveis 
-             SET descricao = :descricao, mes = :mes, ano = :ano, valor = :valor
+            "UPDATE dividas_variaveis
+             SET categoria_id = :categoria_id, descricao = :descricao, mes = :mes, ano = :ano, valor = :valor
              WHERE id = :id"
         );
 
         return $stmt->execute([
-            'id' => $divida->id,
-            'descricao' => $divida->descricao,
-            'mes' => $divida->mes,
-            'ano' => $divida->ano,
-            'valor' => $divida->valor
+            'id'           => $divida->id,
+            'categoria_id' => $divida->categoria_id,
+            'descricao'    => $divida->descricao,
+            'mes'          => $divida->mes,
+            'ano'          => $divida->ano,
+            'valor'        => $divida->valor,
         ]);
     }
 

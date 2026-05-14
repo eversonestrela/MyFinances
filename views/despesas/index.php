@@ -14,11 +14,20 @@
             <?php else: ?>
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead><tr><th>Descrição</th><th>Valor Total</th><th>Parcelas</th><th>Período</th><th>Ações</th></tr></thead>
+                        <thead><tr><th>Descrição</th><th>Categoria</th><th>Valor Total</th><th>Parcelas</th><th>Período</th><th>Ações</th></tr></thead>
                         <tbody>
                             <?php foreach ($despesas as $despesa): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($despesa->descricao) ?></td>
+                                    <td>
+                                        <?php if ($despesa->categoria_nome): ?>
+                                            <span class="badge rounded-pill" style="background:#6c757d20;color:#495057;border:1px solid #dee2e6;">
+                                                <?= htmlspecialchars($despesa->categoria_nome) ?>
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="text-muted small">—</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="text-danger fw-bold">R$ <?= number_format($despesa->valor_total, 2, ',', '.') ?></td>
                                     <td><?= $despesa->quantidade_parcelas ?>x de R$ <?= number_format($despesa->valor_parcela, 2, ',', '.') ?></td>
                                     <td><?= date('d/m/Y', strtotime($despesa->data_inicio)) ?> - <?= date('d/m/Y', strtotime($despesa->data_fim)) ?></td>

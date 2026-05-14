@@ -11,11 +11,20 @@
             <?php else: ?>
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead><tr><th>Descrição</th><th>Valor</th><th>Período</th><th>Ações</th></tr></thead>
+                        <thead><tr><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Período</th><th>Ações</th></tr></thead>
                         <tbody>
                             <?php foreach ($dividas as $divida): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($divida->descricao) ?></td>
+                                    <td>
+                                        <?php if ($divida->categoria_nome): ?>
+                                            <span class="badge rounded-pill" style="background:#6c757d20;color:#495057;border:1px solid #dee2e6;">
+                                                <?= htmlspecialchars($divida->categoria_nome) ?>
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="text-muted small">—</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td class="text-warning fw-bold">R$ <?= number_format($divida->valor, 2, ',', '.') ?></td>
                                     <td><?= str_pad($divida->mes, 2, '0', STR_PAD_LEFT) ?>/<?= $divida->ano ?></td>
                                     <td>

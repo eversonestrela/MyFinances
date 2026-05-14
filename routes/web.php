@@ -6,11 +6,13 @@
  */
 
 use App\Controllers\AuthController;
+use App\Controllers\CategoriaController;
 use App\Controllers\DashboardController;
 use App\Controllers\ReceitaController;
 use App\Controllers\DespesaController;
 use App\Controllers\DividaController;
 use App\Controllers\PerfilController;
+use App\Controllers\RelatorioController;
 
 // Rota raiz - redireciona para dashboard
 $router->get('/', function($request, $response) {
@@ -60,6 +62,22 @@ $router->post('/dividas/store', [DividaController::class, 'store']);
 $router->get('/dividas/{id}/edit', [DividaController::class, 'edit']);
 $router->post('/dividas/{id}/update', [DividaController::class, 'update']);
 $router->get('/dividas/{id}/delete', [DividaController::class, 'delete']);
+
+// ============================================
+// Rotas de Relatórios
+// ============================================
+$router->get('/relatorios', [RelatorioController::class, 'index']);
+$router->get('/relatorios/exportar-pdf', [RelatorioController::class, 'exportarPdf']);
+$router->get('/relatorios/exportar-excel', [RelatorioController::class, 'exportarExcel']);
+
+// ============================================
+// Rotas de Categorias
+// ============================================
+$router->get('/categorias', [CategoriaController::class, 'index']);
+$router->post('/categorias/store', [CategoriaController::class, 'store']);
+$router->post('/categorias/{id}/update', [CategoriaController::class, 'update']);
+$router->get('/categorias/{id}/delete', [CategoriaController::class, 'delete']);
+$router->get('/categorias/{id}/toggle', [CategoriaController::class, 'toggle']);
 
 // ============================================
 // Rotas de Perfil

@@ -10,6 +10,8 @@ class DividaVariavel
 {
     public ?int $id = null;
     public int $usuario_id;
+    public ?int $categoria_id = null;
+    public ?string $categoria_nome = null;
     public string $descricao;
     public int $mes;
     public int $ano;
@@ -38,6 +40,8 @@ class DividaVariavel
     {
         $this->id = $data['id'] ?? null;
         $this->usuario_id = $data['usuario_id'] ?? 0;
+        $this->categoria_id = isset($data['categoria_id']) ? (int) $data['categoria_id'] : null;
+        $this->categoria_nome = $data['categoria_nome'] ?? null;
         $this->descricao = $data['descricao'] ?? '';
         $this->mes = (int) ($data['mes'] ?? 0);
         $this->ano = (int) ($data['ano'] ?? 0);
@@ -55,6 +59,7 @@ class DividaVariavel
         return [
             'id' => $this->id,
             'usuario_id' => $this->usuario_id,
+            'categoria_id' => $this->categoria_id,
             'descricao' => $this->descricao,
             'mes' => $this->mes,
             'ano' => $this->ano,

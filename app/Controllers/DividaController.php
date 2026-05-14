@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\AuthService;
+use App\Services\CategoriaService;
 use App\Repositories\DividaVariavelRepository;
 use App\Models\DividaVariavel;
 use App\Core\Session;
@@ -14,17 +15,14 @@ class DividaController extends Controller
 {
     private AuthService $authService;
     private DividaVariavelRepository $dividaRepository;
+    private CategoriaService $categoriaService;
 
-    /**
-     * Construtor
-     */
     public function __construct($request, $response)
     {
         parent::__construct($request, $response);
-        $this->authService = new AuthService();
+        $this->authService      = new AuthService();
         $this->dividaRepository = new DividaVariavelRepository();
-
-        // Proteger rota
+        $this->categoriaService = new CategoriaService();
         $this->authService->requireAuth();
     }
 
@@ -47,8 +45,12 @@ class DividaController extends Controller
      */
     public function create(): void
     {
+        $usuarioId  = $this->authService->getUsuarioId();
+        $categorias = $this->categoriaService->listar($usuarioId);
+
         $this->view('dividas/create', [
-            'usuario' => $this->authService->getUsuario()
+            'usuario'    => $this->authService->getUsuario(),
+            'categorias' => $categorias,
         ]);
     }
 
@@ -57,14 +59,15 @@ class DividaController extends Controller
      */
     public function store(): void
     {
-        $data = $this->request->only(['descricao', 'valor', 'mes', 'ano']);
-        
+        $data = $this->request->only(['descricao', 'categoria_id', 'valor', 'mes', 'ano']);
+
         $divida = new DividaVariavel();
-        $divida->usuario_id = $this->authService->getUsuarioId();
-        $divida->descricao = $data['descricao'];
-        $divida->valor = (float) $data['valor'];
-        $divida->mes = (int) $data['mes'];
-        $divida->ano = (int) $data['ano'];
+        $divida->usuario_id   = $this->authService->getUsuarioId();
+        $divida->categoria_id = !empty($data['categoria_id']) ? (int) $data['categoria_id'] : null;
+        $divida->descricao    = $data['descricao'];
+        $divida->valor        = (float) $data['valor'];
+        $divida->mes          = (int) $data['mes'];
+        $divida->ano          = (int) $data['ano'];
 
         if ($this->dividaRepository->create($divida)) {
             Session::flash('success', 'Dívida cadastrada com sucesso!');
@@ -89,9 +92,13 @@ class DividaController extends Controller
             return;
         }
 
+        $usuarioId  = $this->authService->getUsuarioId();
+        $categorias = $this->categoriaService->listar($usuarioId);
+
         $this->view('dividas/edit', [
-            'divida' => $divida,
-            'usuario' => $this->authService->getUsuario()
+            'divida'     => $divida,
+            'usuario'    => $this->authService->getUsuario(),
+            'categorias' => $categorias,
         ]);
     }
 
@@ -109,12 +116,13 @@ class DividaController extends Controller
             return;
         }
 
-        $data = $this->request->only(['descricao', 'valor', 'mes', 'ano']);
-        
-        $divida->descricao = $data['descricao'];
-        $divida->valor = (float) $data['valor'];
-        $divida->mes = (int) $data['mes'];
-        $divida->ano = (int) $data['ano'];
+        $data = $this->request->only(['descricao', 'categoria_id', 'valor', 'mes', 'ano']);
+
+        $divida->categoria_id = !empty($data['categoria_id']) ? (int) $data['categoria_id'] : null;
+        $divida->descricao    = $data['descricao'];
+        $divida->valor        = (float) $data['valor'];
+        $divida->mes          = (int) $data['mes'];
+        $divida->ano          = (int) $data['ano'];
 
         if ($this->dividaRepository->update($divida)) {
             Session::flash('success', 'Dívida atualizada com sucesso!');

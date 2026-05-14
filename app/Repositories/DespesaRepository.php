@@ -29,11 +29,16 @@ class DespesaRepository
      */
     public function findById(int $id): ?Despesa
     {
-        $stmt = $this->db->prepare("SELECT * FROM despesas WHERE id = :id");
+        $stmt = $this->db->prepare(
+            "SELECT d.*, c.nome AS categoria_nome
+             FROM despesas d
+             LEFT JOIN categorias c ON c.id = d.categoria_id
+             WHERE d.id = :id"
+        );
         $stmt->execute(['id' => $id]);
-        
+
         $data = $stmt->fetch();
-        
+
         return $data ? new Despesa($data) : null;
     }
 
@@ -46,17 +51,19 @@ class DespesaRepository
     public function findByUsuario(int $usuarioId): array
     {
         $stmt = $this->db->prepare(
-            "SELECT * FROM despesas 
-             WHERE usuario_id = :usuario_id 
-             ORDER BY data_inicio DESC"
+            "SELECT d.*, c.nome AS categoria_nome
+             FROM despesas d
+             LEFT JOIN categorias c ON c.id = d.categoria_id
+             WHERE d.usuario_id = :usuario_id
+             ORDER BY d.data_inicio DESC"
         );
         $stmt->execute(['usuario_id' => $usuarioId]);
-        
+
         $despesas = [];
         while ($row = $stmt->fetch()) {
             $despesas[] = new Despesa($row);
         }
-        
+
         return $despesas;
     }
 
@@ -69,19 +76,20 @@ class DespesaRepository
     public function create(Despesa $despesa): bool
     {
         $stmt = $this->db->prepare(
-            "INSERT INTO despesas 
-             (usuario_id, descricao, valor_total, data_inicio, data_fim, quantidade_parcelas, valor_parcela) 
-             VALUES (:usuario_id, :descricao, :valor_total, :data_inicio, :data_fim, :quantidade_parcelas, :valor_parcela)"
+            "INSERT INTO despesas
+             (usuario_id, categoria_id, descricao, valor_total, data_inicio, data_fim, quantidade_parcelas, valor_parcela)
+             VALUES (:usuario_id, :categoria_id, :descricao, :valor_total, :data_inicio, :data_fim, :quantidade_parcelas, :valor_parcela)"
         );
 
         $result = $stmt->execute([
-            'usuario_id' => $despesa->usuario_id,
-            'descricao' => $despesa->descricao,
-            'valor_total' => $despesa->valor_total,
-            'data_inicio' => $despesa->data_inicio,
-            'data_fim' => $despesa->data_fim,
+            'usuario_id'          => $despesa->usuario_id,
+            'categoria_id'        => $despesa->categoria_id,
+            'descricao'           => $despesa->descricao,
+            'valor_total'         => $despesa->valor_total,
+            'data_inicio'         => $despesa->data_inicio,
+            'data_fim'            => $despesa->data_fim,
             'quantidade_parcelas' => $despesa->quantidade_parcelas,
-            'valor_parcela' => $despesa->valor_parcela
+            'valor_parcela'       => $despesa->valor_parcela,
         ]);
 
         if ($result) {
@@ -100,21 +108,22 @@ class DespesaRepository
     public function update(Despesa $despesa): bool
     {
         $stmt = $this->db->prepare(
-            "UPDATE despesas 
-             SET descricao = :descricao, valor_total = :valor_total, 
+            "UPDATE despesas
+             SET categoria_id = :categoria_id, descricao = :descricao, valor_total = :valor_total,
                  data_inicio = :data_inicio, data_fim = :data_fim,
                  quantidade_parcelas = :quantidade_parcelas, valor_parcela = :valor_parcela
              WHERE id = :id"
         );
 
         return $stmt->execute([
-            'id' => $despesa->id,
-            'descricao' => $despesa->descricao,
-            'valor_total' => $despesa->valor_total,
-            'data_inicio' => $despesa->data_inicio,
-            'data_fim' => $despesa->data_fim,
+            'id'                  => $despesa->id,
+            'categoria_id'        => $despesa->categoria_id,
+            'descricao'           => $despesa->descricao,
+            'valor_total'         => $despesa->valor_total,
+            'data_inicio'         => $despesa->data_inicio,
+            'data_fim'            => $despesa->data_fim,
             'quantidade_parcelas' => $despesa->quantidade_parcelas,
-            'valor_parcela' => $despesa->valor_parcela
+            'valor_parcela'       => $despesa->valor_parcela,
         ]);
     }
 

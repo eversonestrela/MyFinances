@@ -6,6 +6,7 @@ use App\Models\Despesa;
 use App\Models\DespesaParcela;
 use App\Repositories\DespesaRepository;
 use App\Repositories\DespesaParcelaRepository;
+use App\Repositories\CategoriaRepository;
 use DateTime;
 
 /**
@@ -15,14 +16,13 @@ class DespesaService
 {
     private DespesaRepository $despesaRepository;
     private DespesaParcelaRepository $parcelaRepository;
+    private CategoriaRepository $categoriaRepository;
 
-    /**
-     * Construtor
-     */
     public function __construct()
     {
-        $this->despesaRepository = new DespesaRepository();
-        $this->parcelaRepository = new DespesaParcelaRepository();
+        $this->despesaRepository   = new DespesaRepository();
+        $this->parcelaRepository   = new DespesaParcelaRepository();
+        $this->categoriaRepository = new CategoriaRepository();
     }
 
     /**
@@ -36,6 +36,10 @@ class DespesaService
         // Validar dados
         if (empty($data['descricao']) || empty($data['data_inicio']) || empty($data['data_fim'])) {
             return ['success' => false, 'message' => 'Todos os campos são obrigatórios', 'despesa' => null];
+        }
+
+        if (empty($data['categoria_id'])) {
+            return ['success' => false, 'message' => 'Selecione uma categoria', 'despesa' => null];
         }
 
         $tipoParcelamento = $data['tipo_parcelamento'] ?? 'dividir';
@@ -70,8 +74,9 @@ class DespesaService
 
         // Criar despesa
         $despesa = new Despesa();
-        $despesa->usuario_id = $data['usuario_id'];
-        $despesa->descricao = $data['descricao'];
+        $despesa->usuario_id          = $data['usuario_id'];
+        $despesa->categoria_id        = (int) $data['categoria_id'];
+        $despesa->descricao           = $data['descricao'];
         $despesa->valor_total = $valorTotal;
         $despesa->data_inicio = $data['data_inicio'];
         $despesa->data_fim = $data['data_fim'];

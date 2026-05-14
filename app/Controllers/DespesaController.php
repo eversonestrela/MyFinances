@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\AuthService;
 use App\Services\DespesaService;
+use App\Services\CategoriaService;
 use App\Core\Session;
 
 /**
@@ -13,17 +14,14 @@ class DespesaController extends Controller
 {
     private AuthService $authService;
     private DespesaService $despesaService;
+    private CategoriaService $categoriaService;
 
-    /**
-     * Construtor
-     */
     public function __construct($request, $response)
     {
         parent::__construct($request, $response);
-        $this->authService = new AuthService();
-        $this->despesaService = new DespesaService();
-
-        // Proteger rota
+        $this->authService      = new AuthService();
+        $this->despesaService   = new DespesaService();
+        $this->categoriaService = new CategoriaService();
         $this->authService->requireAuth();
     }
 
@@ -46,8 +44,12 @@ class DespesaController extends Controller
      */
     public function create(): void
     {
+        $usuarioId  = $this->authService->getUsuarioId();
+        $categorias = $this->categoriaService->listar($usuarioId);
+
         $this->view('despesas/create', [
-            'usuario' => $this->authService->getUsuario()
+            'usuario'    => $this->authService->getUsuario(),
+            'categorias' => $categorias,
         ]);
     }
 
@@ -56,7 +58,7 @@ class DespesaController extends Controller
      */
     public function store(): void
     {
-        $data = $this->request->only(['descricao', 'valor_total', 'valor_parcela_fixa', 'tipo_parcelamento', 'data_inicio', 'data_fim']);
+        $data = $this->request->only(['descricao', 'categoria_id', 'valor_total', 'valor_parcela_fixa', 'tipo_parcelamento', 'data_inicio', 'data_fim']);
         $data['usuario_id'] = $this->authService->getUsuarioId();
 
         $result = $this->despesaService->criarDespesa($data);

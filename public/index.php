@@ -8,6 +8,11 @@
 // Definir caminho raiz do projeto
 define('BASE_PATH', dirname(__DIR__));
 
+// Carregar autoloader do Composer (bibliotecas de terceiros)
+if (file_exists(BASE_PATH . '/vendor/autoload.php')) {
+    require BASE_PATH . '/vendor/autoload.php';
+}
+
 // Carregador de classes (PSR-4 simplificado)
 spl_autoload_register(function ($class) {
     // Converter namespace para caminho de arquivo

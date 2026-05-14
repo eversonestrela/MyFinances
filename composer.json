@@ -1,0 +1,16 @@
+{
+    "name": "myfinances/app",
+    "description": "Sistema de controle financeiro pessoal",
+    "type": "project",
+    "require": {
+        "php": ">=8.2",
+        "dompdf/dompdf": "^2.0",
+        "phpoffice/phpspreadsheet": "^2.3"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

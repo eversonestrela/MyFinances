@@ -10,8 +10,98 @@
                             <label for="descricao" class="form-label">Descrição</label>
                             <input type="text" class="form-control" id="descricao" name="descricao" required>
                         </div>
+
+                        <!-- Categoria -->
+                        <div class="mb-3">
+                            <label for="categoria_id" class="form-label">
+                                Categoria <span class="text-danger">*</span>
+                            </label>
+                            <?php if (empty($categorias)): ?>
+                                <div class="alert alert-warning py-2 mb-0">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>
+                                    Nenhuma categoria cadastrada.
+                                    <a href="/categorias" target="_blank">Criar categorias</a>
+                                </div>
+                                <input type="hidden" name="categoria_id" value="">
+                            <?php else: ?>
+                                <select class="form-select" id="categoria_id" name="categoria_id" required>
+                                    <option value="">Selecione uma categoria...</option>
+                                    <?php foreach ($categorias as $cat): ?>
+                                        <option value="<?= $cat->id ?>">
+                                            <?= htmlspecialchars($cat->nome) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            <?php endif; ?>
+                        </div>
                         
                         <!-- Tipo de Parcelamento -->
+                        <div class="mb-4">
+                            <label class="form-label d-block">Tipo de Parcelamento</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tipo_parcelamento" id="tipo_dividir" value="dividir" checked>
+                                <label class="form-check-label" for="tipo_dividir">
+                                    <strong>Dividir Valor Total</strong> - O valor será dividido igualmente entre os meses
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="tipo_parcelamento" id="tipo_fixa" value="fixa">
+                                <label class="form-check-label" for="tipo_fixa">
+                                    <strong>Parcela Fixa</strong> - Mesmo valor todo mês
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Campos para Dividir Valor -->
+                        <div id="campos_dividir">
+                            <div class="mb-3">
+                                <label for="valor_total" class="form-label">Valor Total</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="text" class="form-control money-input" id="valor_total" name="valor_total" placeholder="0,00" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos para Parcela Fixa -->
+                        <div id="campos_fixa" style="display: none;">
+                            <div class="mb-3">
+                                <label for="valor_parcela_fixa" class="form-label">Valor da Parcela Mensal</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="text" class="form-control money-input" id="valor_parcela_fixa" name="valor_parcela_fixa" placeholder="0,00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Período -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="data_inicio" class="form-label">Data Início</label>
+                                <input type="date" class="form-control" id="data_inicio" name="data_inicio" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="data_fim" class="form-label">Data Fim</label>
+                                <input type="date" class="form-control" id="data_fim" name="data_fim" required>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info" id="info_dividir">
+                            <i class="bi bi-info-circle"></i> As parcelas serão calculadas automaticamente dividindo o valor total pelos meses
+                        </div>
+                        <div class="alert alert-info" id="info_fixa" style="display: none;">
+                            <i class="bi bi-info-circle"></i> Será criada uma parcela com o mesmo valor para cada mês do período
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle"></i> Salvar</button>
+                            <a href="/despesas" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
                         <div class="mb-4">
                             <label class="form-label d-block">Tipo de Parcelamento</label>
                             <div class="form-check">

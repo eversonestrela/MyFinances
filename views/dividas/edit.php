@@ -7,6 +7,29 @@
                 <div class="card-body">
                     <form method="POST" action="/dividas/<?= $divida->id ?>/update">
                         <div class="mb-3"><label for="descricao" class="form-label">Descrição</label><input type="text" class="form-control" id="descricao" name="descricao" value="<?= htmlspecialchars($divida->descricao) ?>" required></div>
+
+                        <!-- Categoria -->
+                        <div class="mb-3">
+                            <label for="categoria_id" class="form-label">Categoria</label>
+                            <?php if (empty($categorias)): ?>
+                                <div class="alert alert-warning py-2 mb-0">
+                                    <i class="bi bi-exclamation-triangle me-1"></i>
+                                    Nenhuma categoria cadastrada.
+                                    <a href="/categorias" target="_blank">Criar categorias</a>
+                                </div>
+                                <input type="hidden" name="categoria_id" value="">
+                            <?php else: ?>
+                                <select class="form-select" id="categoria_id" name="categoria_id">
+                                    <option value="">Sem categoria</option>
+                                    <?php foreach ($categorias as $cat): ?>
+                                        <option value="<?= $cat->id ?>" <?= $cat->id === $divida->categoria_id ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($cat->nome) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            <?php endif; ?>
+                        </div>
+
                         <div class="mb-3"><label for="valor" class="form-label">Valor</label><input type="number" class="form-control" id="valor" name="valor" step="0.01" min="0" value="<?= $divida->valor ?>" required></div>
                         <div class="row">
                             <div class="col-6 mb-3"><label for="mes" class="form-label">Mês</label><select class="form-select" id="mes" name="mes" required>
