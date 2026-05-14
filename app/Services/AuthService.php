@@ -134,11 +134,37 @@ class AuthService
         $usuario->senha = password_hash($data['senha'], PASSWORD_DEFAULT);
         $usuario->foto_perfil = null;
 
+
         if ($this->usuarioRepository->create($usuario)) {
+            // Cria categorias padrão para o novo usuário
+            $this->criarCategoriasPadrao($usuario->id);
             return ['success' => true, 'message' => 'Usuário cadastrado com sucesso', 'usuario' => $usuario];
         }
-
         return ['success' => false, 'message' => 'Erro ao cadastrar usuário', 'usuario' => null];
+    }
+
+    /**
+     * Cria categorias padrão para um novo usuário
+     */
+    private function criarCategoriasPadrao(int $usuarioId): void
+    {
+        $categorias = [
+            ['Cartão de Crédito', 'bi-credit-card-fill',  '#e74c3c'],
+            ['Alimentação',       'bi-basket-fill',        '#e67e22'],
+            ['Transporte',        'bi-car-front-fill',     '#3498db'],
+            ['Saúde',             'bi-heart-pulse-fill',   '#e91e63'],
+            ['Moradia',           'bi-house-fill',         '#9b59b6'],
+            ['Internet/Telefone', 'bi-wifi',               '#1abc9c'],
+            ['Lazer',             'bi-controller',         '#f39c12'],
+            ['Investimentos',     'bi-graph-up-arrow',     '#27ae60'],
+            ['Empréstimos',       'bi-bank',               '#c0392b'],
+            ['Outros',            'bi-three-dots',         '#95a5a6'],
+        ];
+        $db = \App\Core\Database::getConnection();
+        $stmt = $db->prepare("INSERT INTO categorias (usuario_id, nome, icone, cor) VALUES (?, ?, ?, ?)");
+        foreach ($categorias as $cat) {
+            $stmt->execute([$usuarioId, $cat[0], $cat[1], $cat[2]]);
+        }
     }
 
     /**
